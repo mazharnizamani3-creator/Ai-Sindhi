@@ -35,11 +35,11 @@ class SindhiAssistantRepository(
         try {
             if (agriGuideDao.getGuideCount() == 0) {
                 agriGuideDao.insertGuides(SindhiAgriKnowledgeBase.defaultGuides)
-                // Insert initial welcome message
+                // Insert initial professional welcome message
                 chatDao.insertMessage(
                     ChatMessageEntity(
                         isUser = false,
-                        messageText = "جي سائين! حڪم ڪريو.\nآءٌ سنڌي داناءُ AI آهيان. سنڌ جي زراعت، فصلن جي حفاظت، حشرات جي روڪٿام، ٻج، پاڻي، ڀاڻ ۽ سنڌي ثقافت يا ڪنهن به ٻئي سوال لاءِ مان هميشه حاضر آهيان!",
+                        messageText = "م خوش آمديد! مان سنڌي داناءُ AI آهيان. زراعت، فني معلومات يا ڪنهن به سوال لاءِ مان حاضر آهيان.",
                         category = "welcome"
                     )
                 )
@@ -65,7 +65,6 @@ class SindhiAssistantRepository(
             try {
                 val contentsList = mutableListOf<GeminiContent>()
 
-                // Add recent history for context
                 val recentHistory = history.takeLast(6)
                 for (msg in recentHistory) {
                     contentsList.add(
@@ -76,7 +75,6 @@ class SindhiAssistantRepository(
                     )
                 }
 
-                // Add current prompt
                 contentsList.add(
                     GeminiContent(
                         role = "user",
@@ -99,13 +97,9 @@ class SindhiAssistantRepository(
                 val apiResponse = GeminiClient.service.generateContent(apiKey, request)
                 val rawText = apiResponse.candidates?.firstOrNull()?.content?.parts?.firstOrNull()?.text
 
+                // Removed forced repetitive greeting prefix completely for a professional look
                 if (!rawText.isNullOrBlank()) {
-                    // Ensure the Sindhi greeting is prominently at the beginning if not present
-                    responseText = if (!rawText.trimStart().startsWith("جي سائين! حڪم ڪريو")) {
-                        "جي سائين! حڪم ڪريو.\n$rawText"
-                    } else {
-                        rawText
-                    }
+                    responseText = rawText
                 } else {
                     responseText = SindhiAgriKnowledgeBase.findMatchingResponse(userPrompt)
                 }
@@ -114,7 +108,6 @@ class SindhiAssistantRepository(
                 responseText = SindhiAgriKnowledgeBase.findMatchingResponse(userPrompt)
             }
         } else {
-            // Intelligent offline knowledge engine response
             responseText = SindhiAgriKnowledgeBase.findMatchingResponse(userPrompt)
         }
 
@@ -138,7 +131,7 @@ class SindhiAssistantRepository(
                 val request = GeminiRequest(
                     contents = listOf(
                         GeminiContent(
-                            parts = listOf(GeminiPart(text = effectivePrompt))
+                            parts = listOf(GeminiPart(text = "Generate an image: $effectivePrompt"))
                         )
                     ),
                     generationConfig = GeminiGenerationConfig(
@@ -147,13 +140,14 @@ class SindhiAssistantRepository(
                     )
                 )
 
-                val response = GeminiClient.service.generateImageContent(apiKey, request)
+                // Fixed to use standard generateContent endpoint which supports multimodal outputs properly
+                val response = GeminiClient.service.generateContent(apiKey, request)
                 val inline = response.candidates?.firstOrNull()?.content?.parts?.firstOrNull { it.inlineData != null }?.inlineData
                 if (inline != null) {
                     base64Data = inline.data
                 }
             } catch (e: Exception) {
-                Log.w("SindhiRepo", "Image generation API fallback: ${e.message}")
+                Log.w("SindhiRepo", "Image generation API error: ${e.message}")
             }
         }
 
@@ -185,11 +179,10 @@ class SindhiAssistantRepository(
 
     suspend fun clearHistory() = withContext(Dispatchers.IO) {
         chatDao.clearHistory()
-        // reinsert greeting
         chatDao.insertMessage(
             ChatMessageEntity(
                 isUser = false,
-                messageText = "جي سائين! حڪم ڪريو.\nڳالهه ٻولهه نئين سر شروع ڪئي وئي آهي. مان اوهان جي خدمت لاءِ تيار آهيان.",
+                messageText = "ڳالهه ٻولهه نئين سر شروع ڪئي وئي آهي. مان اوهان جي خدمت لاءِ حاضر آهيان.",
                 category = "welcome"
             )
         )
