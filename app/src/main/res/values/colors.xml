@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ajrak_maroon">#7B1128</color>
+    <color name="ajrak_dark_maroon">#4A0A17</color>
+    <color name="ajrak_indigo">#102A43</color>
+    <color name="ajrak_deep_blue">#0D1B2A</color>
+    <color name="ajrak_gold">#D49B35</color>
+    <color name="ajrak_sand">#FDFBF7</color>
+    <color name="ajrak_sand_dark">#231F20</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
+</resources>

@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">سنڌي داناءُ AI</string>
+    <string name="welcome_greeting">جي سائين! حڪم ڪريو.</string>
+    <string name="tagline">سنڌي ٻوليءَ جو پنهنجو هوشيار ۽ داناءُ مددگار</string>
+    <string name="tab_chat">ڳالهه ٻولهه</string>
+    <string name="tab_agri">زرعي رهنمائي</string>
+    <string name="tab_image">تصوير ساز AI</string>
+    <string name="tab_culture">سنڌي ورثو</string>
+    <string name="tab_bookmarks">محفوظ ڪيل</string>
+    <string name="input_hint">هتي پنهنجو سوال سنڌي ۾ لکو...</string>
+    <string name="send_button">موڪليو</string>
+    <string name="generate_image_btn">تصوير ٺاهيو</string>
+    <string name="crop_guide">فصلن جي معلومات</string>
+    <string name="pest_control">حشرات ۽ بيمارين جو تدارڪ</string>
+    <string name="ajrak_heritage">اجرڪ ۽ سنڌ جي ثقافت</string>
+</resources>

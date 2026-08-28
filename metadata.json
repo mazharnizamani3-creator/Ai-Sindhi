@@ -1,0 +1,6 @@
+{
+  "name": "سنڌي داناءُ AI",
+  "description": "A professional and authentic Sindhi AI assistant with rich Ajrak aesthetics, deep agricultural & pest control knowledge in Sindhi script, and AI image generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
