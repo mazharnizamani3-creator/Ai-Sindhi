@@ -20,6 +20,9 @@ jobs:
     - name: Generate Gradle Wrapper
       run: gradle wrapper
 
+    - name: Create .env file from Secrets
+      run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
