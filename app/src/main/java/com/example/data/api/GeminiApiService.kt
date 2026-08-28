@@ -12,13 +12,13 @@ import retrofit2.http.Query
 import java.util.concurrent.TimeUnit
 
 interface GeminiApiService {
-    @POST("v1beta/models/gemini-3.5-flash:generateContent")
+    @POST("v1beta/models/gemini-1.5-flash:generateContent")
     suspend fun generateContent(
         @Query("key") apiKey: String,
         @Body request: GeminiRequest
     ): GeminiResponse
 
-    @POST("v1beta/models/gemini-2.5-flash-image:generateContent")
+    @POST("v1beta/models/gemini-1.5-flash:generateContent")
     suspend fun generateImageContent(
         @Query("key") apiKey: String,
         @Body request: GeminiRequest
@@ -26,7 +26,7 @@ interface GeminiApiService {
 }
 
 object GeminiClient {
-    private const val BASE_URL = "https://generativelanguage.googleapis.com/"
+    private const val BAS_URL = "https://generativelanguage.googleapis.com/"
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -41,7 +41,7 @@ object GeminiClient {
 
     val service: GeminiApiService by lazy {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BAS_URL)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
